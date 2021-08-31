@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: myservice-legacy-svc-entry
+  namespace : myservice
+spec:
+  hosts:
+  - myservice.legacy  
+  addresses:
+  - 10.0.0.24/24
+  location: MESH_EXTERNAL
+  ports:
+  - number: 8082
+    name: http
+    protocol: HTTP
+  resolution: STATIC
+  endpoints: 
+  - address: 10.0.0.203
+

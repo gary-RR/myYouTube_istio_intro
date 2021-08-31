@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: myservice-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: myservice-istio-svc-external
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - myservice-gateway
+  http:
+  - route:
+    - destination:        
+        host: myservice.myservice.svc.cluster.local
+        subset: v1
+      weight: 20   
+    - destination:
+        host: myservice.legacy
+        subset: 
+      weight: 80  
